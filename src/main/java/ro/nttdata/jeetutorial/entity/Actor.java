@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,6 +24,7 @@ public class Actor {
     private String firstName;
 
     @Column(name = "LAST_NAME")
+    @NotNull
     private String lastName;
 
     @Column(name = "BIRTH_DATE")

@@ -13,6 +13,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @NamedQueries({
         @NamedQuery(name = Movie.FIND_ALL, query = "select m from Movie m")
@@ -28,6 +29,7 @@ public class Movie {
     private Long id;
 
     @Column(name = "TITLE")
+    @NotNull
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL)
