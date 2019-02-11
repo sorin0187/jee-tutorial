@@ -2,9 +2,27 @@ package ro.nttdata.jeetutorial.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "T_ACTORS")
 public class Actor {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "FIRST_NAME")
     private String firstName;
+
+    @Column(name = "LAST_NAME")
     private String lastName;
+
+    @Column(name = "BIRTH_DATE")
     private Date birthDate;
 
     public String getFirstName() {
@@ -29,5 +47,13 @@ public class Actor {
 
     public void setBirthDate(final Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
     }
 }
