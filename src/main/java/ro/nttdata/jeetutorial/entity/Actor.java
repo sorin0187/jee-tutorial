@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "T_ACTORS")
 public class Actor {
@@ -23,6 +25,7 @@ public class Actor {
     private String lastName;
 
     @Column(name = "BIRTH_DATE")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
     public String getFirstName() {
