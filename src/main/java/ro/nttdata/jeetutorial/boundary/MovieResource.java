@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import ro.nttdata.jeetutorial.control.MovieController;
 import ro.nttdata.jeetutorial.entity.Movie;
 
 @Stateless
@@ -22,22 +24,23 @@ import ro.nttdata.jeetutorial.entity.Movie;
 @Consumes("application/json")
 public class MovieResource {
 
-    private static List<Movie> moviesList = new ArrayList<>();
+    @Inject
+    private MovieController movieController;
 
     @POST
     public Response createMovie(final Movie movie) throws URISyntaxException {
-        moviesList.add(movie);
-        return Response.created(new URI("movies/" + (moviesList.size() - 1))).build();
+        final Long id = movieController.createMovie(movie);
+        return Response.created(new URI("movies/" + id)).build();
     }
 
     @GET
     public Response getAllMovies() {
-        return Response.ok(moviesList).build();
+        return Response.ok(movieController.getAllMovies()).build();
     }
 
     @GET
     @Path("{id}")
-    public Response getMovieById(@PathParam("id") final Integer id) {
-        return Response.ok(moviesList.get(id)).build();
+    public Response getMovieById(@PathParam("id") final Long id) {
+        return Response.ok(movieController.getMovie(id)).build();
     }
 }

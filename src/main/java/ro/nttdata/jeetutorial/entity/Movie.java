@@ -9,12 +9,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@NamedQueries({
+        @NamedQuery(name = Movie.FIND_ALL, query = "select m from Movie m")
+})
 @Entity
 @Table(name = "T_MOVIES")
 public class Movie {
+
+    public static final String FIND_ALL = "Movie.findAll";
 
     @Id
     @GeneratedValue
