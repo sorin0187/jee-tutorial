@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import ro.nttdata.jeetutorial.control.MovieController;
@@ -64,13 +65,7 @@ public class MovieResource {
 
     @GET
     @Path("title/{title}")
-    public Response findByTitle(@PathParam("title") final String title) {
-        return Response.ok(movieController.findByTitle(title)).build();
-    }
-
-    @GET
-    @Path("title/{title}/exif")
-    public Response getExIf(@PathParam("title") final String title) {
-        return omdbapiService.getMovieInfo(title).map(Response::ok).orElse(Response.status(Response.Status.NOT_FOUND)).build();
+    public Response findByTitle(@PathParam("title") final String title, @QueryParam("exif") final boolean exIf) {
+        return Response.ok(movieController.findByTitle(title, exIf)).build();
     }
 }

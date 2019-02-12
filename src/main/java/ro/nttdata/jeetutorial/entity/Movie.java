@@ -2,6 +2,7 @@ package ro.nttdata.jeetutorial.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,7 +14,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import ro.nttdata.jeetutorial.integration.omdbapi.entity.OmdbMovie;
 
 @NamedQueries({
         @NamedQuery(name = Movie.FIND_ALL, query = "select m from Movie m"),
@@ -25,7 +29,7 @@ public class Movie {
 
     public static final String FIND_ALL = "Movie.findAll";
     public static final String FIND_BY_TITLE = "Movie.findByTitle";
-    public  static final String PARAM_TITLE = "title";
+    public static final String PARAM_TITLE = "title";
 
     @Id
     @GeneratedValue
@@ -38,6 +42,17 @@ public class Movie {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "MOVIE_ID")
     private List<Actor> cast;
+
+    @Transient
+    private OmdbMovie exIf;
+
+    public OmdbMovie getExIf() {
+        return exIf;
+    }
+
+    public void setExIf(final OmdbMovie exIf) {
+        this.exIf = exIf;
+    }
 
     public String getTitle() {
         return title;
@@ -69,6 +84,11 @@ public class Movie {
     public void updateFields(final Movie update) {
         this.cast = update.getCast();
         this.title = update.getTitle();
+    }
+
+    public Movie addExIf(final Optional<OmdbMovie> movieInfo) {
+        movieInfo.ifPresent(this::setExIf);
+        return this;
     }
 }
 
