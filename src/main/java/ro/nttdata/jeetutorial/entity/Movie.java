@@ -16,13 +16,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @NamedQueries({
-        @NamedQuery(name = Movie.FIND_ALL, query = "select m from Movie m")
+        @NamedQuery(name = Movie.FIND_ALL, query = "select m from Movie m"),
+        @NamedQuery(name = Movie.FIND_BY_TITLE, query = "select m from Movie m where m.title like :" + Movie.PARAM_TITLE)
 })
 @Entity
 @Table(name = "T_MOVIES")
 public class Movie {
 
     public static final String FIND_ALL = "Movie.findAll";
+    public static final String FIND_BY_TITLE = "Movie.findByTitle";
+    public  static final String PARAM_TITLE = "title";
 
     @Id
     @GeneratedValue
@@ -61,6 +64,11 @@ public class Movie {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public void updateFields(final Movie update) {
+        this.cast = update.getCast();
+        this.title = update.getTitle();
     }
 }
 

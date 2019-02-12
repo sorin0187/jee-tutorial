@@ -2,14 +2,14 @@ package ro.nttdata.jeetutorial.boundary;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -41,6 +41,27 @@ public class MovieResource {
     @GET
     @Path("{id}")
     public Response getMovieById(@PathParam("id") final Long id) {
-        return Response.ok(movieController.getMovie(id)).build();
+        return movieController.getMovie(id).map(Response::ok).orElse(Response.status(Response.Status.NOT_FOUND))
+                .build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteMovieById(@PathParam("id") final Long id) {
+        return movieController.deleteMovie(id).map(Response::ok).orElse(Response.status(Response.Status.NOT_FOUND))
+                .build();
+    }
+
+    @PUT
+    @Path("{id}")
+    public Response updateMovie(@PathParam("id") final Long id, final Movie movie) {
+        return movieController.updateMovie(id, movie).map(Response::ok)
+                .orElse(Response.status(Response.Status.NOT_FOUND)).build();
+    }
+
+    @GET
+    @Path("title/{title}")
+    public Response findByTitle(@PathParam("title") final String title) {
+        return Response.ok(movieController.findByTitle(title)).build();
     }
 }
