@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import ro.nttdata.jeetutorial.control.MovieController;
 import ro.nttdata.jeetutorial.entity.Movie;
+import ro.nttdata.jeetutorial.integration.omdbapi.boundary.OmdbapiService;
 
 @Stateless
 @Path("movies")
@@ -26,6 +27,8 @@ public class MovieResource {
 
     @Inject
     private MovieController movieController;
+    @Inject
+    private OmdbapiService omdbapiService;
 
     @POST
     public Response createMovie(final Movie movie) throws URISyntaxException {
@@ -63,5 +66,11 @@ public class MovieResource {
     @Path("title/{title}")
     public Response findByTitle(@PathParam("title") final String title) {
         return Response.ok(movieController.findByTitle(title)).build();
+    }
+
+    @GET
+    @Path("title/{title}/exif")
+    public Response getExIf(@PathParam("title") final String title) {
+        return omdbapiService.getMovieInfo(title).map(Response::ok).orElse(Response.status(Response.Status.NOT_FOUND)).build();
     }
 }
